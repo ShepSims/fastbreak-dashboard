@@ -1,4 +1,3 @@
-import { getSession } from '@auth0/nextjs-auth0';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { getAllTeams, processTeamData } from '@/lib/nba-api';
@@ -9,13 +8,6 @@ export default async function PlayersPage({
 }: { 
   searchParams: { team?: string } 
 }) {
-  const session = await getSession();
-  
-  // Redirect unauthenticated users to the home page
-  if (!session) {
-    redirect('/');
-  }
-
   // Get current NBA season (or use the most recent completed season if it's off-season)
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
@@ -29,7 +21,7 @@ export default async function PlayersPage({
   const teams = await getAllTeams();
   
   // Default to the first team or use the team from the query params
-  const selectedTeamId = searchParams.team ? parseInt(searchParams.team) : 4; // Default to Charlotte Hornets (ID 4)
+  const selectedTeamId = searchParams?.team ? parseInt(searchParams.team) : 4; // Default to Charlotte Hornets (ID 4)
   
   // Fetch data for the selected team
   let teamData;

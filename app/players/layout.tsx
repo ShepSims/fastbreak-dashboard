@@ -1,13 +1,15 @@
+'use client';
+
 import Link from 'next/link';
-import { getSession } from '@auth0/nextjs-auth0';
+import { useUser } from '@auth0/nextjs-auth0/client';
 import ThemeToggle from '@/components/ThemeToggle';
 
-export default async function PlayersLayout({
+export default function PlayersLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const session = await getSession();
+  const { user, error, isLoading } = useUser();
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: 'var(--background)' }}>
@@ -38,13 +40,13 @@ export default async function PlayersLayout({
                 >
                   Players
                 </Link>
-                <Link
+                {/* <Link
                   href="/games"
                   className="border-transparent hover:text-current inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors"
                   style={{ color: 'var(--secondary)', borderColor: 'var(--card-border)' }}
                 >
                   Games
-                </Link>
+                </Link> */}
               </div>
             </div>
             <div className="hidden sm:ml-6 sm:flex sm:items-center space-x-4">
@@ -53,9 +55,6 @@ export default async function PlayersLayout({
                 href="/api/auth/logout" 
                 className="px-4 py-2 rounded transition-colors"
                 style={{ backgroundColor: 'var(--error)', color: 'white' }}
-                onClick={() => {
-                  // Add any additional logout logic here if needed
-                }}
               >
                 Log out
               </Link>
