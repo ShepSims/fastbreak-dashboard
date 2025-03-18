@@ -1,5 +1,5 @@
 import { BalldontlieAPI } from "@balldontlie/sdk";
-import { PlayerWithStats, TeamStanding, HornetsData, Team, Game, GameDetails, PlayerStats } from '@/types/player';
+import { PlayerWithStats, TeamStanding, TeamData, Team, GameDetails, PlayerStats } from '@/types/player';
 
 // Initialize the API client with the API key from environment variables
 const api = new BalldontlieAPI({ 
@@ -9,7 +9,7 @@ const api = new BalldontlieAPI({
 // Mock data for season averages (since it's GOAT tier only)
 const generateMockSeasonAverages = (playerId: number, playerPosition: string, season: number) => {
   // Generate position-appropriate stats
-  let statRanges = {
+  const statRanges = {
     pts: { min: 5, max: 25 },
     reb: { min: 1, max: 12 },
     ast: { min: 0.5, max: 10 },
@@ -59,7 +59,7 @@ const generateMockSeasonAverages = (playerId: number, playerPosition: string, se
 };
 
 // Mock data for team standings (since it's GOAT tier only)
-const generateMockStandings = (teamId: number, teamInfo: any, season: number): TeamStanding => {
+const generateMockStandings = (teamId: number, teamInfo: Team, season: number): TeamStanding => {
   // Generate random but realistic win-loss records
   const wins = Math.floor(Math.random() * 41) + 20; // Between 20-60 wins
   const losses = 82 - wins;
@@ -109,9 +109,9 @@ export const getAllTeams = async (): Promise<Team[]> => {
   try {
     const response = await api.nba.getTeams();
     return response.data;
-  } catch (error) {
-    console.error('Error fetching teams:', error);
-    throw error;
+  } catch (err) {
+    console.error('Error fetching teams:', err);
+    throw err;
   }
 };
 
@@ -120,9 +120,9 @@ export const getTeamById = async (teamId: number): Promise<Team> => {
   try {
     const response = await api.nba.getTeam(teamId);
     return response.data;
-  } catch (error) {
-    console.error(`Error fetching team ${teamId}:`, error);
-    throw error;
+  } catch (err) {
+    console.error(`Error fetching team ${teamId}:`, err);
+    throw err;
   }
 };
 
@@ -131,9 +131,9 @@ export const getPlayerById = async (playerId: number) => {
   try {
     const response = await api.nba.getPlayer(playerId);
     return response.data;
-  } catch (error) {
-    console.error(`Error fetching player ${playerId}:`, error);
-    throw error;
+  } catch (err) {
+    console.error(`Error fetching player ${playerId}:`, err);
+    throw err;
   }
 };
 
@@ -149,7 +149,7 @@ export const getPlayerStats = async (playerId: number, season: number) => {
       if (response.data && response.data.length > 0) {
         return response.data[0];
       }
-    } catch (error) {
+    } catch (_err) {
       console.log('Using mock stats for player (free tier limitation)');
     }
     
@@ -157,9 +157,9 @@ export const getPlayerStats = async (playerId: number, season: number) => {
     // First get the player to determine position
     const playerData = await getPlayerById(playerId);
     return generateMockSeasonAverages(playerId, playerData.position, season);
-  } catch (error) {
-    console.error(`Error fetching stats for player ${playerId}:`, error);
-    throw error;
+  } catch (err) {
+    console.error(`Error fetching stats for player ${playerId}:`, err);
+    throw err;
   }
 };
 
@@ -167,45 +167,115 @@ export const getPlayerStats = async (playerId: number, season: number) => {
 export const getGames = async (params: {
   page?: number;
   perPage?: number;
-  dates?: string[];
   seasons?: number[];
   teamIds?: number[];
+  postseason?: boolean;
 }) => {
   try {
+    console.log('Fetching games with params:', JSON.stringify(params));
     const response = await api.nba.getGames({
       cursor: params.page,
       per_page: params.perPage || 25,
-      dates: params.dates,
       seasons: params.seasons,
-      team_ids: params.teamIds
+      team_ids: params.teamIds,
+      postseason: params.postseason
     });
-    console.log('response', {
-      cursor: params.page,
-      per_page: params.perPage || 25,
-      dates: params.dates,
-      seasons: params.seasons,
-      team_ids: params.teamIds
-    });
+    
+    console.log(`Retrieved ${response.data?.length || 0} games`);
+    
+    // If we get no data, return mock data instead
+    if (!response.data || response.data.length === 0) {
+      console.log('No games data received, using mock data');
+      return {
+        data: generateMockGames(params.seasons?.[0] || 2023, params.teamIds?.[0], 25),
+        meta: {
+          total_count: 25,
+          per_page: 25,
+          current_page: params.page || 1,
+          total_pages: 1
+        }
+      };
+    }
+    
     return response;
-  } catch (error) {
-    console.error('Error fetching games:', error);
-    throw error;
+  } catch (err) {
+    console.error('Error fetching games:', err);
+    // Return mock data on error
+    console.log('Using mock games data due to API error');
+    return {
+      data: generateMockGames(params.seasons?.[0] || 2023, params.teamIds?.[0], 25),
+      meta: {
+        total_count: 25,
+        per_page: 25,
+        current_page: params.page || 1,
+        total_pages: 1
+      }
+    };
   }
 };
+
+// Generate mock games data for testing and fallback
+function generateMockGames(season = 2023, teamId?: number, count = 25) {
+  const games = [];
+  const teams = [
+    { id: 1, abbreviation: 'ATL', city: 'Atlanta', name: 'Hawks', full_name: 'Atlanta Hawks', conference: 'East', division: 'Southeast' },
+    { id: 2, abbreviation: 'BOS', city: 'Boston', name: 'Celtics', full_name: 'Boston Celtics', conference: 'East', division: 'Atlantic' },
+    { id: 3, abbreviation: 'BKN', city: 'Brooklyn', name: 'Nets', full_name: 'Brooklyn Nets', conference: 'East', division: 'Atlantic' },
+    { id: 4, abbreviation: 'CHA', city: 'Charlotte', name: 'Hornets', full_name: 'Charlotte Hornets', conference: 'East', division: 'Southeast' },
+    { id: 5, abbreviation: 'CHI', city: 'Chicago', name: 'Bulls', full_name: 'Chicago Bulls', conference: 'East', division: 'Central' },
+  ];
+  
+  const statuses = ['Final', 'In Progress', 'Scheduled'];
+  const startDate = new Date(`${season}-10-15`);
+  
+  for (let i = 0; i < count; i++) {
+    const homeTeamIndex = teamId ? teams.findIndex(t => t.id === teamId) : Math.floor(Math.random() * teams.length);
+    const homeTeam = homeTeamIndex >= 0 ? teams[homeTeamIndex] : teams[0];
+    
+    let visitorTeamIndex;
+    do {
+      visitorTeamIndex = Math.floor(Math.random() * teams.length);
+    } while (visitorTeamIndex === homeTeamIndex);
+    
+    const visitorTeam = teams[visitorTeamIndex];
+    const gameDate = new Date(startDate);
+    gameDate.setDate(startDate.getDate() + i);
+    
+    const homeScore = Math.floor(Math.random() * 40) + 80;
+    const visitorScore = Math.floor(Math.random() * 40) + 80;
+    const status = statuses[Math.floor(Math.random() * statuses.length)];
+    
+    games.push({
+      id: 1000000 + i,
+      date: gameDate.toISOString(),
+      home_team: homeTeam,
+      home_team_score: homeScore,
+      period: 4,
+      postseason: false,
+      season: season,
+      status: status,
+      time: status === 'Final' ? '' : `Q${Math.floor(Math.random() * 4) + 1}`,
+      visitor_team: visitorTeam,
+      visitor_team_score: visitorScore
+    });
+  }
+  
+  return games;
+}
 
 // Get game by ID
 export const getGameById = async (gameId: number): Promise<GameDetails> => {
   try {
     const response = await api.nba.getGame(gameId);
     return response.data;
-  } catch (error) {
-    console.error(`Error fetching game ${gameId}:`, error);
-    throw error;
+  } catch (err) {
+    console.error(`Error fetching game ${gameId}:`, err);
+    throw err;
   }
 };
 
 // Process and transform player data for any team
-export const processTeamData = async (teamId: number, season: number): Promise<HornetsData> => {
+export const processTeamData = async (teamId: number, season: number): Promise<TeamData> => {
   try {
     // Get team info
     const teamInfo = await getTeamById(teamId);
@@ -252,7 +322,7 @@ export const processTeamData = async (teamId: number, season: number): Promise<H
         const standings = standingsResponse.data;
         teamStanding = standings.find(standing => standing.team.id === teamId) || null;
       }
-    } catch (error) {
+    } catch (_err) {
       console.warn('Using mock standings (free tier limitation)');
       // Generate mock standings data if the API fails or user is on free tier
       teamStanding = generateMockStandings(teamId, teamInfo, season);
@@ -263,8 +333,14 @@ export const processTeamData = async (teamId: number, season: number): Promise<H
       teamStanding: teamStanding,
       team: teamInfo
     };
-  } catch (error) {
-    console.error('Error processing team data:', error);
-    throw error;
+  } catch (err) {
+    console.error('Error processing team data:', err);
+    throw err;
   }
+};
+
+// For backward compatibility
+export const processHornetsData = async (season: number): Promise<TeamData> => {
+  // Charlotte Hornets team ID is 4
+  return processTeamData(4, season);
 }; 

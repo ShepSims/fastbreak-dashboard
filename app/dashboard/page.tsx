@@ -1,13 +1,13 @@
-import { getSession } from '@auth0/nextjs-auth0';
-import Link from 'next/link';
 import { redirect } from 'next/navigation';
+import React from 'react';
+import { getSession } from '@auth0/nextjs-auth0';
 import { getAllTeams, processTeamData } from '@/lib/nba-api';
 import TeamSelector from '@/app/components/dashboard/TeamSelector';
-import PlayerLeaderboard from '@/app/components/dashboard/PlayerLeaderboard';
-import ShootingEfficiency from '@/app/components/dashboard/ShootingEfficiency';
-import PointsDistribution from '@/app/components/dashboard/PointsDistribution';
-import PerformanceRadarChart from '@/app/components/dashboard/PerformanceRadarChart';
-import { TeamData, Team } from '@/types/player';
+import PlayerLeaderboard from '@/components/dashboard/PlayerLeaderboard';
+import ShootingEfficiency from '@/components/dashboard/ShootingEfficiency';
+import PointsDistribution from '@/components/dashboard/PointsDistribution';
+import PerformanceRadarChart from '@/components/dashboard/PerformanceRadarChart';
+import { TeamData } from '@/types/player';
 
 export default async function Dashboard({ 
   searchParams 

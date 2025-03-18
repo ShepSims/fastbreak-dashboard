@@ -1,6 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getGames } from '@/lib/nba-api';
 
+interface GamesParams {
+  page: number;
+  perPage: number;
+  seasons: number[];
+  teamIds?: number[];
+}
+
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const page = parseInt(searchParams.get('page') || '1');
@@ -9,7 +16,7 @@ export async function GET(request: NextRequest) {
   const teamId = searchParams.get('teamId');
 
   try {
-    const params: any = {
+    const params: GamesParams = {
       page: page,
       perPage: perPage,
       seasons: [season]

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getGameById } from '@/lib/nba-api';
 
 export async function GET(
-  request: NextRequest,
+  request: Request,
   { params }: { params: { id: string } }
 ) {
   const gameId = parseInt(params.id);

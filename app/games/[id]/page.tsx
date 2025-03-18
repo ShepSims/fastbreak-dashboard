@@ -22,9 +22,9 @@ export default async function GamePage({
   let game;
   try {
     game = await getGameById(gameId);
-  } catch (error) {
-    console.error('Error fetching game data:', error);
-    // We'll handle this in the UI
+  } catch (err) {
+    console.error('Error fetching game details:', err);
+    return <div className="text-red-500 p-4">Failed to load game details</div>;
   }
 
   if (!game) {
@@ -90,7 +90,6 @@ export default async function GamePage({
               </div>
             </div>
             <div className="hidden sm:ml-6 sm:flex sm:items-center">
-              <span className="text-gray-700 mr-4">Hi, {session?.user?.name}</span>
               <Link 
                 href="/api/auth/logout" 
                 className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"

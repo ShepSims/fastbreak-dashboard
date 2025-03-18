@@ -3,7 +3,6 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { getAllTeams, processTeamData } from '@/lib/nba-api';
 import TeamSelector from '@/app/components/dashboard/TeamSelector';
-import { Team } from '@/types/player';
 
 export default async function PlayersPage({ 
   searchParams 

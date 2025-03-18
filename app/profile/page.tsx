@@ -1,7 +1,8 @@
 'use client';
 
-import { useUser } from '@auth0/nextjs-auth0';
+import { useUser } from '@auth0/nextjs-auth0/client';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
@@ -36,7 +37,7 @@ export default function ProfilePage() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-red-600 mb-4">Error Loading Profile</h1>
-          <p className="text-gray-600 mb-4">We couldn't load your profile information. Please try again.</p>
+          <p className="text-gray-600 mb-4">We couldn&apos;t load your profile information. Please try again.</p>
           <div className="space-y-4">
             <Link
               href="/auth/login"
@@ -83,10 +84,12 @@ export default function ProfilePage() {
         <div className="bg-white shadow rounded-lg p-6">
           <div className="flex items-center space-x-4">
             {user.picture && (
-              <img
+              <Image
                 src={user.picture}
-                alt={user.name || 'Profile picture'}
+                alt={user.name || "Profile picture"}
                 className="h-16 w-16 rounded-full"
+                width={64}
+                height={64}
               />
             )}
             <div>
