@@ -63,6 +63,11 @@ AUTH0_CLIENT_SECRET='your-client-secret'
 4. Start the development server:
 
 ```bash
+
+npm i
+#or
+yarn install
+
 npm run dev
 # or
 yarn dev
