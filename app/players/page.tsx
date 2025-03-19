@@ -41,76 +41,77 @@ export default async function PlayersPage({
 
       {teamData ? (
         <>
-          <h1 className="text-3xl font-bold text-gray-900 mb-8">
+          <h1 style={{ color: 'var(--foreground)' }} className="text-3xl font-bold mb-8">
             {teamData.team.full_name} Players
           </h1>
 
-          <div className="bg-white shadow overflow-hidden sm:rounded-lg">
+          <div className="shadow overflow-hidden sm:rounded-lg" style={{ backgroundColor: 'var(--card-bg)', borderColor: 'var(--card-border)' }}>
             <div className="px-4 py-5 sm:px-6">
-              <h2 className="text-lg font-medium text-gray-900">Roster</h2>
-              <p className="mt-1 max-w-2xl text-sm text-gray-500">
+              <h2 className="text-lg font-medium" style={{ color: 'var(--foreground)' }}>Roster</h2>
+              <p className="mt-1 max-w-2xl text-sm" style={{ color: 'var(--secondary)' }}>
                 {season}-{season+1} Season
               </p>
             </div>
-            <div className="border-t border-gray-200">
+            <div style={{ borderTop: '1px solid var(--card-border)' }}>
               <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
+                <table className="min-w-full divide-y" style={{ borderColor: 'var(--table-border)' }}>
+                  <thead style={{ backgroundColor: 'var(--table-header)' }}>
                     <tr>
-                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style={{ color: 'var(--secondary)' }}>
                         Player
                       </th>
-                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style={{ color: 'var(--secondary)' }}>
                         Position
                       </th>
-                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style={{ color: 'var(--secondary)' }}>
                         PPG
                       </th>
-                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style={{ color: 'var(--secondary)' }}>
                         RPG
                       </th>
-                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style={{ color: 'var(--secondary)' }}>
                         APG
                       </th>
-                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style={{ color: 'var(--secondary)' }}>
                         FG%
                       </th>
-                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style={{ color: 'var(--secondary)' }}>
                         3P%
                       </th>
-                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style={{ color: 'var(--secondary)' }}>
                         Actions
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
+                  <tbody className="divide-y" style={{ backgroundColor: 'var(--card-bg)', borderColor: 'var(--table-border)' }}>
                     {teamData.players.map((player) => (
-                      <tr key={player.id}>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      <tr key={player.id} className="hover:bg-gray-50" style={{ backgroundColor: 'var(--card-bg)', borderColor: 'var(--table-border)' }}>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium" style={{ color: 'var(--foreground)' }}>
                           {player.name}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ color: 'var(--secondary)' }}>
                           {player.position || 'N/A'}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ color: 'var(--secondary)' }}>
                           {player.stats ? player.stats.pts.toFixed(1) : 'N/A'}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ color: 'var(--secondary)' }}>
                           {player.stats ? player.stats.reb.toFixed(1) : 'N/A'}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ color: 'var(--secondary)' }}>
                           {player.stats ? player.stats.ast.toFixed(1) : 'N/A'}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ color: 'var(--secondary)' }}>
                           {player.stats ? (player.stats.fg_pct * 100).toFixed(1) + '%' : 'N/A'}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ color: 'var(--secondary)' }}>
                           {player.stats ? (player.stats.fg3_pct * 100).toFixed(1) + '%' : 'N/A'}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                           <Link 
                             href={`/players/${player.id}`}
-                            className="text-blue-600 hover:text-blue-900"
+                            className="hover:text-blue-900"
+                            style={{ color: 'var(--primary)' }}
                           >
                             View
                           </Link>
@@ -124,8 +125,8 @@ export default async function PlayersPage({
           </div>
         </>
       ) : (
-        <div className="bg-white shadow overflow-hidden sm:rounded-lg p-8 text-center">
-          <p className="text-red-500">Error loading team data. Please try again later.</p>
+        <div className="shadow overflow-hidden sm:rounded-lg p-8 text-center" style={{ backgroundColor: 'var(--card-bg)', borderColor: 'var(--card-border)' }}>
+          <p style={{ color: 'var(--error)' }}>Error loading team data. Please try again later.</p>
         </div>
       )}
     </>

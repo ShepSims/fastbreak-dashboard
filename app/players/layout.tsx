@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useState } from 'react';
 import { useUser } from '@auth0/nextjs-auth0/client';
 import ThemeToggle from '@/components/ThemeToggle';
 
@@ -10,6 +11,11 @@ export default function PlayersLayout({
   children: React.ReactNode;
 }) {
   const { user, error, isLoading } = useUser();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: 'var(--background)' }}>
@@ -49,12 +55,80 @@ export default function PlayersLayout({
                 </Link> */}
               </div>
             </div>
+            
+            {/* Mobile menu button */}
+            <div className="flex items-center sm:hidden">
+              <button
+                onClick={toggleMobileMenu}
+                className="p-2 rounded-md"
+                style={{ color: 'var(--foreground)' }}
+                aria-label="Main menu"
+                aria-expanded="false"
+              >
+                <svg 
+                  className="h-6 w-6" 
+                  stroke="currentColor" 
+                  fill="none" 
+                  viewBox="0 0 24 24"
+                >
+                  {isMobileMenuOpen ? (
+                    <path 
+                      strokeLinecap="round" 
+                      strokeLinejoin="round" 
+                      strokeWidth="2" 
+                      d="M6 18L18 6M6 6l12 12" 
+                    />
+                  ) : (
+                    <path 
+                      strokeLinecap="round" 
+                      strokeLinejoin="round" 
+                      strokeWidth="2" 
+                      d="M4 6h16M4 12h16M4 18h16" 
+                    />
+                  )}
+                </svg>
+              </button>
+            </div>
+            
             <div className="hidden sm:ml-6 sm:flex sm:items-center space-x-4">
               <ThemeToggle />
               <Link 
                 href="/api/auth/logout" 
                 className="px-4 py-2 rounded transition-colors"
                 style={{ backgroundColor: 'var(--error)', color: 'white' }}
+              >
+                Log out
+              </Link>
+            </div>
+          </div>
+        </div>
+        
+        {/* Mobile menu, toggle classes based on menu state */}
+        <div className={`${isMobileMenuOpen ? 'block' : 'hidden'} sm:hidden`}>
+          <div className="pt-2 pb-3 space-y-1" style={{ borderTop: '1px solid var(--card-border)' }}>
+            <Link
+              href="/dashboard"
+              className="block py-2 px-4 text-base font-medium"
+              style={{ color: 'var(--foreground)' }}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Dashboard
+            </Link>
+            <Link
+              href="/players"
+              className="block py-2 px-4 text-base font-medium"
+              style={{ color: 'var(--foreground)' }}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Players
+            </Link>
+            <div className="flex items-center justify-between px-4 py-2">
+              <ThemeToggle />
+              <Link 
+                href="/api/auth/logout" 
+                className="px-4 py-2 rounded transition-colors"
+                style={{ backgroundColor: 'var(--error)', color: 'white' }}
+                onClick={() => setIsMobileMenuOpen(false)}
               >
                 Log out
               </Link>

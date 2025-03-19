@@ -53,55 +53,55 @@ export default async function Dashboard({
       </div>
 
       {teamData && (
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">
+        <h1 style={{ color: 'var(--foreground)' }} className="text-3xl font-bold mb-8">
           {teamData.team.full_name} Dashboard
-          <span className="text-lg font-normal text-gray-500 ml-2">
+          <span className="text-lg font-normal ml-2" style={{ color: 'var(--secondary)' }}>
             {season}-{season+1} Season
           </span>
         </h1>
       )}
 
       {!teamData ? (
-        <div className="bg-white shadow overflow-hidden sm:rounded-lg p-8 text-center">
-          <p className="text-red-500">Error loading team data. Please try again later.</p>
+        <div className="shadow overflow-hidden sm:rounded-lg p-8 text-center" style={{ backgroundColor: 'var(--card-bg)', color: 'var(--foreground)', borderColor: 'var(--card-border)' }}>
+          <p style={{ color: 'var(--error)' }}>Error loading team data. Please try again later.</p>
         </div>
       ) : (
         <>
           {/* Team Stats Overview */}
           {teamData.teamStanding && (
-            <div className="bg-white shadow overflow-hidden sm:rounded-lg mb-8">
+            <div className="shadow overflow-hidden sm:rounded-lg mb-8" style={{ backgroundColor: 'var(--card-bg)', borderColor: 'var(--card-border)' }}>
               <div className="px-4 py-5 sm:px-6">
-                <h2 className="text-lg font-medium text-gray-900">Team Standing</h2>
-                <p className="mt-1 max-w-2xl text-sm text-gray-500">
+                <h2 className="text-lg font-medium" style={{ color: 'var(--foreground)' }}>Team Standing</h2>
+                <p className="mt-1 max-w-2xl text-sm" style={{ color: 'var(--secondary)' }}>
                   Current standings in the {teamData.team.conference}ern conference
                 </p>
               </div>
-              <div className="border-t border-gray-200 px-4 py-5 sm:p-6">
+              <div style={{ borderTop: '1px solid var(--card-border)' }} className="px-4 py-5 sm:p-6">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <div className="text-sm font-medium text-gray-500">Conference Rank</div>
-                    <div className="mt-1 text-3xl font-semibold text-gray-900">
+                  <div className="p-4 rounded-lg" style={{ backgroundColor: 'var(--table-header)' }}>
+                    <div className="text-sm font-medium" style={{ color: 'var(--secondary)' }}>Conference Rank</div>
+                    <div className="mt-1 text-3xl font-semibold" style={{ color: 'var(--foreground)' }}>
                       {teamData.teamStanding.conference_rank}
-                      <span className="text-sm text-gray-500 ml-1">
+                      <span className="text-sm ml-1" style={{ color: 'var(--secondary)' }}>
                         of 15
                       </span>
                     </div>
                   </div>
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <div className="text-sm font-medium text-gray-500">Season Record</div>
-                    <div className="mt-1 text-3xl font-semibold text-gray-900">
+                  <div className="p-4 rounded-lg" style={{ backgroundColor: 'var(--table-header)' }}>
+                    <div className="text-sm font-medium" style={{ color: 'var(--secondary)' }}>Season Record</div>
+                    <div className="mt-1 text-3xl font-semibold" style={{ color: 'var(--foreground)' }}>
                       {teamData.teamStanding.wins}-{teamData.teamStanding.losses}
                     </div>
                   </div>
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <div className="text-sm font-medium text-gray-500">Home Record</div>
-                    <div className="mt-1 text-3xl font-semibold text-gray-900">
+                  <div className="p-4 rounded-lg" style={{ backgroundColor: 'var(--table-header)' }}>
+                    <div className="text-sm font-medium" style={{ color: 'var(--secondary)' }}>Home Record</div>
+                    <div className="mt-1 text-3xl font-semibold" style={{ color: 'var(--foreground)' }}>
                       {teamData.teamStanding.home_record}
                     </div>
                   </div>
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <div className="text-sm font-medium text-gray-500">Away Record</div>
-                    <div className="mt-1 text-3xl font-semibold text-gray-900">
+                  <div className="p-4 rounded-lg" style={{ backgroundColor: 'var(--table-header)' }}>
+                    <div className="text-sm font-medium" style={{ color: 'var(--secondary)' }}>Away Record</div>
+                    <div className="mt-1 text-3xl font-semibold" style={{ color: 'var(--foreground)' }}>
                       {teamData.teamStanding.road_record}
                     </div>
                   </div>
@@ -112,53 +112,53 @@ export default async function Dashboard({
 
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
             {/* Player Leaderboard */}
-            <div className="bg-white shadow overflow-hidden sm:rounded-lg">
+            <div className="shadow overflow-hidden sm:rounded-lg" style={{ backgroundColor: 'var(--card-bg)', borderColor: 'var(--card-border)' }}>
               <div className="px-4 py-5 sm:px-6">
-                <h2 className="text-lg font-medium text-gray-900">Player Leaderboard</h2>
-                <p className="mt-1 max-w-2xl text-sm text-gray-500">
+                <h2 className="text-lg font-medium" style={{ color: 'var(--foreground)' }}>Player Leaderboard</h2>
+                <p className="mt-1 max-w-2xl text-sm" style={{ color: 'var(--secondary)' }}>
                   Top performers in key statistical categories
                 </p>
               </div>
-              <div className="border-t border-gray-200">
+              <div style={{ borderTop: '1px solid var(--card-border)' }}>
                 <PlayerLeaderboard players={teamData.players} />
               </div>
             </div>
 
             {/* Shooting Efficiency */}
-            <div className="bg-white shadow overflow-hidden sm:rounded-lg">
+            <div className="shadow overflow-hidden sm:rounded-lg" style={{ backgroundColor: 'var(--card-bg)', borderColor: 'var(--card-border)' }}>
               <div className="px-4 py-5 sm:px-6">
-                <h2 className="text-lg font-medium text-gray-900">Shooting Efficiency</h2>
-                <p className="mt-1 max-w-2xl text-sm text-gray-500">
+                <h2 className="text-lg font-medium" style={{ color: 'var(--foreground)' }}>Shooting Efficiency</h2>
+                <p className="mt-1 max-w-2xl text-sm" style={{ color: 'var(--secondary)' }}>
                   Field goal and 3-point percentages
                 </p>
               </div>
-              <div className="border-t border-gray-200 p-4">
+              <div style={{ borderTop: '1px solid var(--card-border)' }} className="p-4">
                 <ShootingEfficiency players={teamData.players} />
               </div>
             </div>
 
             {/* Performance Radar Chart */}
-            <div className="bg-white shadow overflow-hidden sm:rounded-lg">
+            <div className="shadow overflow-hidden sm:rounded-lg" style={{ backgroundColor: 'var(--card-bg)', borderColor: 'var(--card-border)' }}>
               <div className="px-4 py-5 sm:px-6">
-                <h2 className="text-lg font-medium text-gray-900">Player Performance</h2>
-                <p className="mt-1 max-w-2xl text-sm text-gray-500">
+                <h2 className="text-lg font-medium" style={{ color: 'var(--foreground)' }}>Player Performance</h2>
+                <p className="mt-1 max-w-2xl text-sm" style={{ color: 'var(--secondary)' }}>
                   Multi-stat comparison for selected players
                 </p>
               </div>
-              <div className="border-t border-gray-200 p-4">
+              <div style={{ borderTop: '1px solid var(--card-border)' }} className="p-4">
                 <PerformanceRadarChart players={teamData.players} />
               </div>
             </div>
 
             {/* Points Distribution */}
-            <div className="bg-white shadow overflow-hidden sm:rounded-lg">
+            <div className="shadow overflow-hidden sm:rounded-lg" style={{ backgroundColor: 'var(--card-bg)', borderColor: 'var(--card-border)' }}>
               <div className="px-4 py-5 sm:px-6">
-                <h2 className="text-lg font-medium text-gray-900">Points Distribution</h2>
-                <p className="mt-1 max-w-2xl text-sm text-gray-500">
+                <h2 className="text-lg font-medium" style={{ color: 'var(--foreground)' }}>Points Distribution</h2>
+                <p className="mt-1 max-w-2xl text-sm" style={{ color: 'var(--secondary)' }}>
                   Points per game for all players
                 </p>
               </div>
-              <div className="border-t border-gray-200 p-4">
+              <div style={{ borderTop: '1px solid var(--card-border)' }} className="p-4">
                 <PointsDistribution players={teamData.players} />
               </div>
             </div>
