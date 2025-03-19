@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { UserProvider } from "@auth0/nextjs-auth0/client";
+import { Analytics } from "@vercel/analytics/react"
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,6 +32,7 @@ export default function RootLayout({
         <UserProvider>
           <ThemeProvider>
             {children}
+            <Analytics />
           </ThemeProvider>
         </UserProvider>
       </body>
